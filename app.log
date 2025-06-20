@@ -1,0 +1,62 @@
+2025-05-08 13:36:43,053 - app - CRITICAL - Failed to initialize application
+2025-05-08 13:36:54,221 - app - CRITICAL - Failed to initialize application
+2025-05-08 17:48:31,182 - WARNING - SHAP not available – skipping feature explanations.
+2025-05-08 17:49:12,629 - app - ERROR - [ERROR] Failed to load model components: 'XGBRegressor' object has no attribute 'classes_'
+2025-05-08 17:49:12,630 - app - CRITICAL - [CRITICAL] Failed to initialize application: 'XGBRegressor' object has no attribute 'classes_'
+2025-05-08 17:49:58,758 - app - ERROR - [ERROR] Failed to load model components: 'XGBRegressor' object has no attribute 'classes_'
+2025-05-08 17:49:58,759 - app - CRITICAL - [CRITICAL] Failed to initialize application: 'XGBRegressor' object has no attribute 'classes_'
+2025-05-08 17:50:39,026 - WARNING - SHAP not available – skipping feature explanations.
+2025-05-08 17:52:05,095 - app - WARNING - [WARNING] Using default categorical values for regressor model
+2025-05-08 17:52:05,096 - app - WARNING - [WARNING] SHAP library not available. Skipping SHAP-related logic.
+2025-05-08 17:55:29,502 - app - WARNING - [WARNING] Using default categorical values for regressor model
+2025-05-08 17:55:29,504 - app - WARNING - [WARNING] SHAP library not available. Skipping SHAP-related logic.
+2025-05-08 17:55:38,759 - app - WARNING - [WARN] Missing required fields: ['business_age']
+2025-05-08 17:58:22,135 - app - WARNING - [WARNING] Using default categorical values for regressor model
+2025-05-08 17:58:22,136 - app - WARNING - [WARNING] SHAP library not available. Skipping SHAP-related logic.
+2025-05-08 17:58:27,411 - app - ERROR - [ERROR] Prediction failed: feature_names mismatch: ['expenses', 'business_age'] ['income', 'expenses', 'business_age']
+training data did not have the following fields: income
+2025-05-08 18:05:50,012 - app - WARNING - [WARNING] Using default categorical values for regressor model
+2025-05-08 18:05:50,013 - app - WARNING - [WARNING] SHAP library not available. Skipping SHAP-related logic.
+2025-05-08 18:05:59,941 - app - ERROR - [ERROR] Prediction failed: feature_names mismatch: ['expenses', 'business_age'] ['income', 'expenses', 'business_age']
+training data did not have the following fields: income
+2025-05-08 18:06:26,879 - app - WARNING - [WARNING] Using default categorical values for regressor model
+2025-05-08 18:06:26,880 - app - WARNING - [WARNING] SHAP library not available. Skipping SHAP-related logic.
+2025-05-08 18:06:34,224 - app - WARNING - [WARN] Missing required fields: ['business_age']
+2025-05-08 18:07:18,942 - app - WARNING - [WARNING] Using default categorical values for regressor model
+2025-05-08 18:07:18,944 - app - WARNING - [WARNING] SHAP library not available. Skipping SHAP-related logic.
+2025-05-08 18:07:24,676 - app - ERROR - [ERROR] Prediction failed: feature_names mismatch: ['expenses', 'business_age'] ['income', 'expenses', 'business_age']
+training data did not have the following fields: income
+2025-05-08 18:07:52,180 - app - WARNING - [WARNING] Using default categorical values for regressor model
+2025-05-08 18:07:52,181 - app - WARNING - [WARNING] SHAP library not available. Skipping SHAP-related logic.
+2025-05-08 18:07:57,421 - app - ERROR - [ERROR] Prediction failed: feature_names mismatch: ['expenses', 'business_age'] ['income', 'expenses', 'business_age']
+training data did not have the following fields: income
+2025-05-08 18:08:11,115 - app - WARNING - [WARNING] Using default categorical values for regressor model
+2025-05-08 18:08:11,125 - app - WARNING - [WARNING] SHAP library not available. Skipping SHAP-related logic.
+2025-05-08 18:08:32,928 - app - WARNING - [WARN] Missing required fields: ['business_age']
+2025-05-08 18:08:54,664 - app - WARNING - [WARN] Missing required fields: ['business_age']
+2025-05-08 18:09:02,076 - app - WARNING - [WARN] Missing required fields: ['business_age']
+2025-05-08 18:09:12,450 - app - WARNING - [WARN] Missing required fields: ['business_age']
+2025-05-08 18:09:32,131 - app - WARNING - [WARN] Missing required fields: ['business_age']
+2025-05-08 18:09:54,429 - app - WARNING - [WARN] Missing required fields: ['business_age']
+2025-05-08 18:36:03,660 - app - WARNING - [WARN] Missing required fields: ['business_age']
+2025-05-08 18:40:19,875 - app - WARNING - [WARNING] Using default categorical values for regressor model
+2025-05-08 18:40:19,877 - app - WARNING - [WARNING] SHAP library not available. Skipping SHAP-related logic.
+2025-05-08 18:40:27,613 - app - ERROR - [ERROR] Prediction failed: feature_names mismatch: ['expenses', 'business_age'] ['income', 'expenses', 'business_age']
+training data did not have the following fields: income
+2025-05-08 18:41:39,750 - app - ERROR - [ERROR] Prediction failed: feature_names mismatch: ['expenses', 'business_age'] ['income', 'expenses', 'business_age']
+training data did not have the following fields: income
+2025-05-08 18:43:29,006 - app - WARNING - [WARN] Missing required fields: ['income']
+2025-05-08 18:43:47,504 - app - ERROR - [ERROR] Prediction failed: feature_names mismatch: ['expenses', 'business_age'] ['income', 'expenses', 'business_age']
+training data did not have the following fields: income
+2025-05-08 18:46:57,846 - app - WARNING - [WARNING] Using default categorical values for regressor model
+2025-05-08 18:46:57,847 - app - WARNING - [WARNING] SHAP library not available. Skipping SHAP-related logic.
+2025-05-08 18:47:05,257 - app - ERROR - [ERROR] Prediction failed: feature_names mismatch: ['expenses', 'business_age'] ['income', 'expenses', 'business_age']
+training data did not have the following fields: income
+2025-05-08 18:48:23,873 - app - ERROR - [ERROR] Prediction failed: feature_names mismatch: ['expenses', 'business_age'] ['income', 'expenses', 'business_age']
+training data did not have the following fields: income
+2025-05-08 19:10:39,197 - app - ERROR - [ERROR] Prediction failed: feature_names mismatch: ['expenses', 'business_age'] ['income', 'expenses', 'business_age']
+training data did not have the following fields: income
+2025-05-08 19:12:54,639 - app - ERROR - [ERROR] Prediction failed: feature_names mismatch: ['expenses', 'business_age'] ['income', 'expenses', 'business_age']
+training data did not have the following fields: income
+2025-05-08 19:14:51,153 - app - ERROR - [ERROR] Prediction failed: feature_names mismatch: ['expenses', 'business_age'] ['income', 'expenses', 'business_age']
+training data did not have the following fields: income

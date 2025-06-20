@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: sbi-ml-model
+    env: python
+    buildCommand: ""
+    startCommand: gunicorn app:app --bind 0.0.0.0:$PORT
+    plan: free
