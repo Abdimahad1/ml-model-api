@@ -17,11 +17,11 @@ warnings.filterwarnings("ignore", category=InconsistentVersionWarning)
 app = Flask(__name__)
 CORS(app)
 
-# Correct path for model (works on Render or local)
+# Model directory
 MODEL_DIR = os.path.join(os.getcwd(), 'model_files')
 os.makedirs(MODEL_DIR, exist_ok=True)
 
-# Load model artifacts
+# Load artifacts
 try:
     model = joblib.load(os.path.join(MODEL_DIR, 'xgboost_model.pkl'))
     label_encoders = joblib.load(os.path.join(MODEL_DIR, 'label_encoders.pkl'))
@@ -31,12 +31,11 @@ except Exception as e:
     print(f"❌ Failed to load model artifacts: {str(e)}")
     raise e
 
-# Predict route
 @app.route('/predict', methods=['POST'])
 def predict():
     try:
         if not request.is_json:
-            print("❌ Request is not JSON")
+            print("❌ Invalid: Request not JSON")
             return jsonify({"error": "Request must be JSON", "status": "failed"}), 400
 
         data = request.get_json()
@@ -56,22 +55,42 @@ def predict():
             'convertible_note', 'equity_crowdfunding',
             'private_equity', 'post_ipo_equity'
         ]
-        if not any(data.get(field, 0) > 0 for field in funding_fields):
-            print("❌ No valid funding fields provided.")
-            return jsonify({
-                "error": "No funding types were selected. Please provide at least one source of funding.",
-                "status": "failed"
-            }), 400
+
+        has_funding = any(data.get(field, 0) > 0 for field in funding_fields)
 
         current_year = datetime.now().year
         business_age = current_year - int(data['founded_year'])
 
+        # If business is under 5 years old, still predict but flag risky
         if business_age < 5:
-            print("❌ Business too young:", business_age)
+            explanation = [
+                f"The business is very young ({business_age} years old), and younger businesses generally carry high risk."
+            ]
+            prediction = 0
+            probability = 0.2
             return jsonify({
-                "error": "Business must be at least 5 years old to be considered safe",
-                "status": "failed"
-            }), 400
+                "prediction": "Not Safe",
+                "probability": probability,
+                "status": "success",
+                "explanation": explanation
+            })
+
+        # If no funding fields are present, treat as high risk instead of 400
+        if not has_funding:
+            explanation = [
+                "No funding rounds were detected. This appears to be the first round for this business. Proceed with caution and perform due diligence before investing."
+            ]
+            prediction = 1   # treat as Safe
+            probability = 0.5  # medium confidence
+            print("⚠️ No funding fields detected, returning Safe with caution.")
+            return jsonify({
+                "prediction": "Safe",
+                "probability": probability,
+                "status": "success",
+                "explanation": explanation
+            })
+
+
 
         input_data = {
             'name': data.get('name', 'Unknown'),
@@ -92,46 +111,45 @@ def predict():
             'first_funding_year': int(data.get('first_funding_year', data['founded_year']))
         }
 
-        print("🧪 Cleaned input data for model:", input_data)
+        print("🧪 Cleaned input data:", input_data)
 
         df = pd.DataFrame([input_data])
 
-        # Encode categorical fields
+        # encode
         for col in label_encoders:
             if col in df.columns:
                 try:
                     df[col] = label_encoders[col].transform(df[col].astype(str))
-                except ValueError as ve:
-                    print(f"⚠️ Label encoding failed for column: {col} — {ve}")
+                except ValueError:
                     df[col] = 0
+                    print(f"⚠️ Label encoding fallback: {col} → 0")
 
         df = df[feature_names]
-        print("📊 Final DataFrame for prediction:\n", df)
+        print("📊 Final DataFrame for model:\n", df)
 
-        # Model prediction
+        # Model predict
         probability = model.predict_proba(df)[0][1]
         prediction = model.predict(df)[0]
 
-        # Explanation
         explanation = []
         if business_age >= 10:
-            explanation.append("The business has been operating for over 10 years, indicating strong stability.")
+            explanation.append("The business has been operating for over 10 years, showing strong stability.")
         elif business_age >= 5:
-            explanation.append("The business has a healthy age of over 5 years, suggesting resilience.")
+            explanation.append("The business has a healthy age over 5 years, suggesting resilience.")
 
         if data.get("debt_financing", 0) > 0:
-            explanation.append("Debt financing detected, which often reflects financial trust by lenders.")
+            explanation.append("Debt financing detected, which can show financial trust by lenders.")
         if data.get("seed", 0) > 0:
-            explanation.append("Seed funding is present, indicating investor confidence at an early stage.")
+            explanation.append("Seed funding shows investor confidence at an early stage.")
         if data.get("venture", 0) > 0:
-            explanation.append("Venture funding implies high-growth potential and backing.")
+            explanation.append("Venture funding implies high growth potential.")
         if data.get("equity_crowdfunding", 0) > 0:
-            explanation.append("Equity crowdfunding reflects public interest and community support.")
+            explanation.append("Equity crowdfunding suggests public support.")
 
         if not explanation:
-            explanation.append("Low funding and minimal history may increase investment risk.")
+            explanation.append("Minimal history and funding detected, increasing risk.")
 
-        print("✅ Prediction:", "Safe" if prediction == 1 else "Not Safe", "| Probability:", probability)
+        print(f"✅ Prediction: {'Safe' if prediction==1 else 'Not Safe'} | Probability: {probability:.4f}")
 
         return jsonify({
             "prediction": "Safe" if prediction == 1 else "Not Safe",
@@ -140,14 +158,10 @@ def predict():
             "explanation": explanation
         })
 
-    except ValueError as ve:
-        print("❌ ValueError:", ve)
-        return jsonify({"error": f"Invalid input: {str(ve)}", "status": "failed"}), 400
     except Exception as e:
-        print("❌ Exception:", e)
+        print("❌ Exception during prediction:", e)
         return jsonify({"error": str(e), "status": "failed"}), 500
 
-# Health check
 @app.route('/health', methods=['GET'])
 def health_check():
     return jsonify({
@@ -156,8 +170,6 @@ def health_check():
         "required_features": feature_names
     })
 
-# Run app
 if __name__ == '__main__':
-    # Use PORT from Render environment if available
     port = int(os.environ.get('PORT', 3000))
     app.run(host='0.0.0.0', port=port, debug=False)
